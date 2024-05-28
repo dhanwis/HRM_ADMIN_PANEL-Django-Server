@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+
 class User(AbstractUser): 
     is_user = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
@@ -33,4 +34,3 @@ class UserProfile(models.Model):
     intership_type = models.CharField(max_length=50)
     paid_amount = models.DecimalField(max_digits=10, decimal_places=2)
     stipend_amount = models.DecimalField(max_digits=10,decimal_places=2)
-    

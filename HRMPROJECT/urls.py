@@ -19,4 +19,5 @@ from django.urls import path,include
 urlpatterns = [
     path('database/', admin.site.urls),
     path('authapp/',include('authapp.urls')),
+    path('hr/',include('hrapp.urls')),
 ]
