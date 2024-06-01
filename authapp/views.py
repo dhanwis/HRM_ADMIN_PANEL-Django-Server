@@ -3,8 +3,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import APIView
 from rest_framework import status
 from .serializers import *
-from django.contrib.auth import authenticate,login
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate,login
+
 
 
 # Create your views here.
@@ -165,8 +166,75 @@ class InternLogin(APIView):
     "address": "rose villa"
 }
 
-     
-{
-    "username": "Devika",
-    "password":"password"
-   }
+class Login(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username=data.get('username')
+        password=data.get('password')
+        
+        hr=authenticate(request,username=username,password=password)
+        if hr and hr.is_hr==True:
+            serializer=UserSerializer(hr)
+            token,created=Token.objects.get_or_create(user=hr)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    
+class LoginTeamlead(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username=data.get('username')
+        password=data.get('password')
+        
+        teamlead=authenticate(request,username=username,password=password)
+        if teamlead and teamlead.is_teamlead==True:
+            serializer=UserSerializer(teamlead)
+            token,created=Token.objects.get_or_create(user=teamlead)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    
+class LoginStaff(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username=data.get('username')
+        password=data.get('password')
+        
+        staff=authenticate(request,username=username,password=password)
+        if staff and staff.is_staff==True:
+            serializer=UserSerializer(staff)
+            token,created=Token.objects.get_or_create(user=staff)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
+    
+    
+
+class LoginFrontoffice(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username=data.get('username')
+        password=data.get('password')
+        
+        frontoffice=authenticate(request,username=username,password=password)
+        if frontoffice and frontoffice.is_frontoffice==True:
+            serializer=UserSerializer(frontoffice)
+            token,created=Token.objects.get_or_create(user=frontoffice)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
+    
+    
+
+class LoginIntern(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username=data.get('username')
+        password=data.get('password')
+        
+        intern=authenticate(request,username=username,password=password)
+        if intern and intern.is_intern==True:
+            serializer=UserSerializer(intern)
+            token,created=Token.objects.get_or_create(user=intern)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
