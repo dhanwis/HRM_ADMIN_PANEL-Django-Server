@@ -3,6 +3,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import APIView
 from rest_framework import status
 from .serializers import *
+from django.contrib.auth import authenticate,login
+from rest_framework.authtoken.models import Token
+
 
 # Create your views here.
 
@@ -20,7 +23,20 @@ class TeamLeadListCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
+class TeamLeadLogin(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username = request.data.get('username')
+        password = request.data.get('password')
+        team_lead= authenticate(request, username=username, password=password)
+        if team_lead and team_lead.is_teamlead==True:
+            # hr = User.objects.filter(is_admin=True)
+            serializer=UserSerializer(team_lead)
+            # login(request,serializer)
+            token,created=Token.objects.get_or_create(user=team_lead)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"detilas":"invalid credentils"},status=status.HTTP_400_BAD_REQUEST)
+
  ###################################################### staff ############################################################### 
     
 class StaffListCreate(APIView):
@@ -36,6 +52,20 @@ class StaffListCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
  
+class StaffLogin(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username = request.data.get('username')
+        password = request.data.get('password')
+        staff= authenticate(request, username=username, password=password)
+        if staff and staff.is_staff==True:
+            # hr = User.objects.filter(is_admin=True)
+            serializer=UserSerializer(staff)
+            # login(request,serializer)
+            token,created=Token.objects.get_or_create(user=staff)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"detilas":"invalid credentils"},status=status.HTTP_400_BAD_REQUEST)
+
  ########################################################## front office ################################################   
 class FrontOfficeListCreate(APIView):
     def get(self, request, format=None):
@@ -50,11 +80,25 @@ class FrontOfficeListCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
+class FrontOfficeLogin(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username = request.data.get('username')
+        password = request.data.get('password')
+        front_office= authenticate(request, username=username, password=password)
+        if front_office and front_office.is_frontoffice==True:
+            # hr = User.objects.filter(is_admin=True)
+            serializer=UserSerializer(front_office)
+            # login(request,serializer)
+            token,created=Token.objects.get_or_create(user=front_office)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"detilas":"invalid credentils"},status=status.HTTP_400_BAD_REQUEST)
+
 ########################################################### HR #############################################################  
     
 class HRListCreate(APIView):
     def get(self, request, format=None):
-        hr = User.objects.filter(is_admin = True)
+        hr = User.objects.filter(is_hr = True)
         serializer = UserSerializer(hr, many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
         
@@ -64,6 +108,20 @@ class HRListCreate(APIView):
             serializer.save(is_admin = True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class HRLogin(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username = request.data.get('username')
+        password = request.data.get('password')
+        hr= authenticate(request, username=username, password=password)
+        if hr and hr.is_hr==True:
+            # hr = User.objects.filter(is_admin=True)
+            serializer=UserSerializer(hr)
+            # login(request,serializer)
+            token,created=Token.objects.get_or_create(user=hr)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"detilas":"invalid credentils"},status=status.HTTP_400_BAD_REQUEST)
 
 
 ################################################################# intern ###################################################
@@ -82,7 +140,20 @@ class InternListCreate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
-    
+class InternLogin(APIView):
+    def post(self,request,format=None):
+        data=request.data
+        username = request.data.get('username')
+        password = request.data.get('password')
+        intern= authenticate(request, username=username, password=password)
+        if intern and intern.is_intern==True:
+            # hr = User.objects.filter(is_admin=True)
+            serializer=UserSerializer(intern)
+            # login(request,serializer)
+            token,created=Token.objects.get_or_create(user=intern)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"detilas":"invalid credentils"},status=status.HTTP_400_BAD_REQUEST)
+
 {
     "username": "Devika",
     "password":"password",
@@ -93,3 +164,9 @@ class InternListCreate(APIView):
     "phone": "09632154845",
     "address": "rose villa"
 }
+
+     
+{
+    "username": "Devika",
+    "password":"password"
+   }

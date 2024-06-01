@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'authapp',
     'hrapp',
     'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
