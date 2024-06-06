@@ -8,3 +8,8 @@ class TeamLeadAssignSerializer(serializers.ModelSerializer):
         model = TeamleadAssign
         fields = '__all__'
         # extra_kwargs = {'password':{'write_only':True}}
+
+# class ProjectAssignSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model=ProjectAssign
+#         fields='__all__'
