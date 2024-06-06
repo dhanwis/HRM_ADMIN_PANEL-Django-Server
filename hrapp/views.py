@@ -5,7 +5,6 @@ from rest_framework import status
 from .serializers import *
 from django.core.exceptions import ObjectDoesNotExist
 
-
 # Create your views here.
 class TeamLeadAssignCreate(APIView):
     def get(self, request, format=None):
@@ -20,7 +19,8 @@ class TeamLeadAssignCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
+    
+    
 class TeamLeadAssignUpdate(APIView):
     def get(self,request,teamlead_id,format=None):
         team=TeamleadAssign.objects.get(id=teamlead_id)
@@ -33,37 +33,40 @@ class TeamLeadAssignUpdate(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    
+    
+    
+#############################DELETE####################
 
-
-
-
-class TeamLeadDelete(APIView):
+class TeamLeadAssignDelete(APIView):
     def get(self,request,teamlead_id,format=None):
         try:
-           team_lead=TeamleadAssign.objects.get(id=teamlead_id)
-           serializer=TeamLeadAssignSerializer(team_lead)
-           return Response(serializer.data,status=status.HTTP_200_OK)
+            team_lead=TeamleadAssign.objects.get(id=teamlead_id)
+            serializer=TeamLeadAssignSerializer(team_lead)
+            return Response(serializer.data,status.HTTP_200_OK)
         except ObjectDoesNotExist:
             return Response({"error":"teamlead not found"},status=status.HTTP_404_NOT_FOUND)
     def delete(self,request,teamlead_id,format=None):
         try:
-            team_lead = TeamleadAssign.objects.get(id=teamlead_id)
+            team_lead=TeamleadAssign.objects.get(id=teamlead_id)
             team_lead.delete()
-            return Response({"message": "Team lead deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+            return Response({"message":"Teamlead deleted succesfully"},status=status.HTTP_204_NO_CONTENT)
         except ObjectDoesNotExist:
-            return Response({"error": "Team lead not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error":"Teamlead not found"},status=status.HTTP_404_NOT_FOUND)
+        
+        
 
+class StudentAssignlistCreate(APIView):
+    def get(self, request, format=None):
+        student_assign=StudentAssign.objects.all()
+        serializer= StudentAssignSerializer(student_assign,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
     
-
-# class ProjectAssignCreate(APIView):
-#     def get(self, request, format=None):
-#         project_assign= ProjectAssign.objects.all()
-#         serializer = ProjectAssignSerializer(project_assign, many=True)
-#         return Response(serializer.data,status=status.HTTP_200_OK)
-            
-#     def post(self, request, format=None):
-#         serializer = ProjectAssignSerializer(data=request.data)
-#         if serializer.is_valid():   
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, format=None):
+        serializer = StudentAssignSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

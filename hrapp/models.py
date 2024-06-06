@@ -11,12 +11,15 @@ class TeamleadAssign(models.Model):
     task_description = models.CharField(max_length=100,null=True,blank=True)
     def __str__(self):
         return self.user.username
-
-# class ProjectAssign(models.Model):
-#     team=models.ForeignKey(TeamleadAssign,models.CASCADE)
-#     projectname=models.CharField(max_length=100)
-#     employeename=models.CharField(max_length=100)
-#     projectdate=models.DateField(max_length=100,null=True,blank=True)
-#     deadline=models.DateField(max_length=100,null=True,blank=True)
+    
+    
+    
 
 
+class StudentAssign(models.Model):
+    student_name=models.ForeignKey(User,models.CASCADE,limit_choices_to={'is_intern':True})
+    task_name=models.CharField(max_length=100,null=True,blank=True)
+    task_details=models.CharField(max_length=100,null=True,blank=True)
+    guide_name=models.CharField(max_length=100,null=True,blank=True)
+    start_date=models.DateField()
+    end_date=models.DateField()
