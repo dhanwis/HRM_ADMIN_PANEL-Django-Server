@@ -11,7 +11,7 @@ class TeamLeadAssignCreate(APIView):
         team_lead = TeamleadAssign.objects.all()
         serializer = TeamLeadAssignSerializer(team_lead, many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
-        
+            
     def post(self, request, format=None):
         serializer = TeamLeadAssignSerializer(data=request.data)
         if serializer.is_valid():   
