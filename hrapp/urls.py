@@ -29,3 +29,4 @@ urlpatterns = [ path('teamleadassign/',TeamLeadAssignCreate.as_view(),name='Team
                path('leavecreate',LeaveCreate.as_view(),name='leavecreate'),
 ]
 
+
