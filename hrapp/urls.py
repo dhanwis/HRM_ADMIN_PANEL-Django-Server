@@ -2,8 +2,7 @@ from django.urls import path
 from .views import *
 # from api.views import *
 urlpatterns = [ path('teamleadassign/',TeamLeadAssignCreate.as_view(),name='Teamleadassign'),
-               path('teamleadassignedit/',TeamLeadAssignEdit.as_view(),name='Teamleadassignedit'),
-               path("teamleadupdate/<int:teamlead_id>/",TeamLeadAssignUpdate.as_view(),name="teamleadassignupdate"),
+               path("teamleadupdate/<int:teamlead_id>",TeamLeadAssignUpdate.as_view(),name="teamleadassignupdate"),
                path("teamleaddelete/<int:teamlead_id>",TeamLeadAssignDelete.as_view(),name="teamleaddelete"),
                path('studentassign/listcreate/',StudentAssignlistCreate.as_view(),name='studentassignlistcreateview'),
                

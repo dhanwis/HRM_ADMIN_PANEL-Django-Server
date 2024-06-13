@@ -21,20 +21,7 @@ class TeamLeadAssignCreate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
    
 ########################### teamlead edit #################################################################################### 
-class TeamLeadAssignEdit(APIView): 
-     
-    def get(self, request, Teamlead_id, format=None):
-        team_lead = self.get_object(id=Teamlead_id)
-        serializer = TeamLeadAssignSerializer(team_lead)
-        return Response(serializer.data)
 
-    def patch(self, request, Teamlead_id, format=None):
-        team_lead = self.get_object(id=Teamlead_id)
-        serializer = TeamLeadAssignSerializer(team_lead, data=request.data,partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 ######################## team lead Upadate ####################################################################################
 
