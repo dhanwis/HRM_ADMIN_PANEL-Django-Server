@@ -3,8 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-class User(AbstractUser): 
-    is_user = models.BooleanField(default=False)
+class User(AbstractUser):
     is_hr = models.BooleanField(default=False)
     is_teamlead = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)

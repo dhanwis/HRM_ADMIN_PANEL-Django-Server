@@ -40,9 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'authapp',
     'hrapp',
-    'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
-    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -53,8 +52,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware'
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware'
 ]
@@ -131,7 +128,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL ='authapp.user'
+AUTH_USER_MODEL='authapp.user'
+
+
+
+
+
+
 
 
 CORS_ALLOWED_ORIGINS = [
@@ -149,4 +152,3 @@ CORS_ALLOW_HEADERS = [
     'authorization',
     'x.target',
 ]
-
