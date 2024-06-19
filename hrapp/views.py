@@ -70,3 +70,71 @@ class StudentAssignlistCreate(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+class StudentAssignDelete(APIView):
+    def get(self,request,student_id,format=None):
+        try:
+            student_assign=StudentAssign.objects.get(id=student_id)
+            serializer=StudentAssignSerializer(student_assign)
+            return Response(serializer.data,status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({"error":"student not found"},status=status.HTTP_404_NOT_FOUND)
+    def delete(self,request,student_id,format=None):
+        try:
+            student_task=StudentAssign.objects.get(id=student_id)
+            student_task.delete()
+            return Response({"message":"student task deleted succesfully"},status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist:
+            return Response({"error":"Teamlead not found"},status=status.HTTP_404_NOT_FOUND)
+    
+
+class AssignProjectCreate(APIView):
+    def get(self, request, format=None):
+        project_assign=AssignProject.objects.all()
+        serializer=AssignProjectSerializer(project_assign,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = AssignProjectSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class Process_Leave_Request(APIView):
+
+#      def process_leave_request(request, request_id):
+      
+#       try:
+
+#         leave_request = LeaveRequest.objects.get(pk=request_id)
+#       except LeaveRequest.DoesNotExist:
+#         return Response({'message': 'Leave request not found'}, status=status.HTTP_404_NOT_FOUND)
+
+#       action = request.data.get('action')
+
+#       if action not in ['accept', 'reject']:
+#         return Response({'message': 'Invalid action'}, status=status.HTTP_400_BAD_REQUEST)
+
+#       leave_request.status = 'accepted' if action == 'accept' else 'rejected'
+#       leave_request.save()
+
+#       serializer = LeaveRequestSerializer(leave_request)
+#       return Response({'message': f'Leave request {action}ed successfully', 'leave_request': serializer.data}, status=status.HTTP_200_OK)
+
+
+class LeaveLetterCreate(APIView):
+    def get(self, request, format=None):
+        leave_create=Leave.objects.all()
+        serializer=LeaveSerializer(leave_create,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = LeaveSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
