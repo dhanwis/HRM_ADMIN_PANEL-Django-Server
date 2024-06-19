@@ -4,6 +4,8 @@ from rest_framework.decorators import APIView
 from rest_framework import status
 from .serializers import *
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import generics, permissions
+from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 class TeamLeadAssignCreate(APIView):
@@ -126,15 +128,40 @@ class AssignProjectCreate(APIView):
 
 
 class LeaveLetterCreate(APIView):
-    def get(self, request, format=None):
-        leave_create=Leave.objects.all()
-        serializer=LeaveSerializer(leave_create,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
-    
-    def post(self, request, format=None):
-        serializer = LeaveSerializer(data=request.data)
-        if serializer.is_valid():   
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+    def get(self, request):
+        leaves = Leave.objects.filter(name=request.user)
+        serializer = LeaveSerializer(leaves, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = LeaveSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+    def get_queryset(self):
+        return self.queryset.filter(name=self.request.user)
+   
+
+class LeaveListView(generics.ListAPIView):
+    queryset = Leave.objects.all()
+    serializer_class = LeaveListSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+
+
+
+
+class LeaveUpdateView(generics.UpdateAPIView):
+    queryset = Leave.objects.all()
+    serializer_class = LeaveUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+
+    def get_queryset(self):
+        return self.queryset.filter(status='Pending')
     
