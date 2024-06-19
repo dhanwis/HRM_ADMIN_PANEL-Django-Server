@@ -39,11 +39,12 @@ class LeaveUpdateSerializer(serializers.ModelSerializer):
 
 class LeaveListSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source='name.username')  # Display the username
-
+    role = serializers.ReadOnlyField(source='name.role')
 
     class Meta:
         model = Leave
-        fields = ['id','name', 'start_date', 'end_date', 'description', 'duration_days', 'status']
+        fields = ['id','name', 'start_date', 'end_date', 'description', 'duration_days', 'status','role']
+
 
     def get_name(self, obj):
         return obj.name.groups.first().name if obj.name.groups.exists() else 'No Role'

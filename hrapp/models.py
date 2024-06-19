@@ -43,8 +43,6 @@ class Leave(models.Model):
         ('Rejected', 'Rejected'),
     ]
     name= models.ForeignKey(User, on_delete=models.CASCADE)
-    
-    # role = models.CharField(max_length=20)
     start_date = models.DateField()
     end_date = models.DateField()
     description = models.TextField()
@@ -53,7 +51,6 @@ class Leave(models.Model):
 
     def save(self, *args, **kwargs):
         self.duration_days = (self.end_date - self.start_date).days + 1
-        # self.name = self.name.user.get_full_name()
         super().save(*args, **kwargs)
 
     def __str__(self):
