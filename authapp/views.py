@@ -18,8 +18,9 @@ class TeamLeadListCreate(APIView):
         
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():   
-            serializer.save(is_teamlead = True)
+        if serializer.is_valid():
+
+            serializer.save(is_teamlead = True,role='teamlead')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -66,7 +67,7 @@ class HRListCreate(APIView):
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():   
-            serializer.save(is_admin = True)
+            serializer.save(is_hr = True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

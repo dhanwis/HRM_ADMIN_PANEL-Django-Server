@@ -4,6 +4,8 @@ from rest_framework.decorators import APIView
 from rest_framework import status
 from .serializers import *
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import generics, permissions
+from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 class TeamLeadAssignCreate(APIView):
@@ -70,3 +72,96 @@ class StudentAssignlistCreate(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+class StudentAssignDelete(APIView):
+    def get(self,request,student_id,format=None):
+        try:
+            student_assign=StudentAssign.objects.get(id=student_id)
+            serializer=StudentAssignSerializer(student_assign)
+            return Response(serializer.data,status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({"error":"student not found"},status=status.HTTP_404_NOT_FOUND)
+    def delete(self,request,student_id,format=None):
+        try:
+            student_task=StudentAssign.objects.get(id=student_id)
+            student_task.delete()
+            return Response({"message":"student task deleted succesfully"},status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist:
+            return Response({"error":"Teamlead not found"},status=status.HTTP_404_NOT_FOUND)
+    
+
+class AssignProjectCreate(APIView):
+    def get(self, request, format=None):
+        project_assign=AssignProject.objects.all()
+        serializer=AssignProjectSerializer(project_assign,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = AssignProjectSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class Process_Leave_Request(APIView):
+
+#      def process_leave_request(request, request_id):
+      
+#       try:
+
+#         leave_request = LeaveRequest.objects.get(pk=request_id)
+#       except LeaveRequest.DoesNotExist:
+#         return Response({'message': 'Leave request not found'}, status=status.HTTP_404_NOT_FOUND)
+
+#       action = request.data.get('action')
+
+#       if action not in ['accept', 'reject']:
+#         return Response({'message': 'Invalid action'}, status=status.HTTP_400_BAD_REQUEST)
+
+#       leave_request.status = 'accepted' if action == 'accept' else 'rejected'
+#       leave_request.save()
+
+#       serializer = LeaveRequestSerializer(leave_request)
+#       return Response({'message': f'Leave request {action}ed successfully', 'leave_request': serializer.data}, status=status.HTTP_200_OK)
+
+
+class LeaveLetterCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+    def get(self, request):
+        leaves = Leave.objects.filter(name=request.user)
+        serializer = LeaveSerializer(leaves, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = LeaveSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+    def get_queryset(self):
+        return self.queryset.filter(name=self.request.user)
+   
+
+class LeaveListView(generics.ListAPIView):
+    queryset = Leave.objects.all()
+    serializer_class = LeaveListSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+
+
+
+
+class LeaveUpdateView(generics.UpdateAPIView):
+    queryset = Leave.objects.all()
+    serializer_class = LeaveUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+
+    def get_queryset(self):
+        return self.queryset.filter(status='Pending')
+    
