@@ -23,12 +23,28 @@ class User(AbstractUser):
     
     
 class UserProfile(models.Model):
-    user = models.OneToOneField(User,models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     university = models.CharField(max_length=100)
     degree_program = models.CharField(max_length=100)
     internship_position = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
-    intership_type = models.CharField(max_length=50)
-    paid_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    stipend_amount = models.DecimalField(max_digits=10,decimal_places=2)
+    category_choices = (
+        ("Student", "Student"),
+        ("Product", "Product")
+    )
+    category = models.CharField(choices=category_choices, max_length=20, default=1)
+    payment_option_choices = (
+        ("Total Amount", "Total Amount"),
+        ("Installment", "Installment")
+    )
+    payment = models.CharField(choices=payment_option_choices, max_length=20, default=1)
+    payment_date = models.DateField(null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    no_of_installments = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+    
+    
+

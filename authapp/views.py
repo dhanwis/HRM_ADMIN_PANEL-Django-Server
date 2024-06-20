@@ -5,8 +5,7 @@ from rest_framework import status
 from .serializers import *
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate,login
-
-
+from .models import User, UserProfile
 
 # Create your views here.
 
@@ -88,7 +87,34 @@ class InternListCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
+
+class InternCreateView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = UserInternSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.save()
+            response_data = {
+                'message': 'Intern registered successfully.',
+                'user': serializer.data
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+
+class InternLoginView(APIView) :
+    def post(self, request) :
+        data=request.data
+        username = data.get('username')
+        password = data.get('password')
+
+        intern = authenticate(username=username, password=password)
+        if intern and intern.is_intern == True:
+            serializer = UserInternSerializer(intern)
+            token, created = Token.objects.get_or_create(user=intern)
+            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
+        return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
 
 {
     "username": "Devika",
