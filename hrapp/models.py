@@ -1,5 +1,6 @@
 from django.db import models
 from authapp.models import User
+import datetime
 # Create your models here.
 
 
@@ -17,6 +18,7 @@ class TeamleadAssign(models.Model):
 
 
 class StudentAssign(models.Model):
+    time_slot=models.TimeField(default=datetime.time(0, 0))
     student_name=models.ForeignKey(User,models.CASCADE,limit_choices_to={'is_intern':True},to_field='username')
     task_name=models.CharField(max_length=100,null=True,blank=True)
     task_details=models.CharField(max_length=100,null=True,blank=True)
@@ -26,7 +28,7 @@ class StudentAssign(models.Model):
     def __str__(self):
         
         return self.student_name.username
-    
+
 
 class AssignProject(models.Model):
     projectname=models.CharField(max_length=100,blank=True)
