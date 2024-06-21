@@ -13,8 +13,11 @@ from django.contrib.auth import authenticate,login
 ############################################### team lead ############################################################## 
 class TeamLeadListCreate(APIView):
     def get(self, request, format=None):
+
         team_lead = User.objects.filter(is_teamlead = True)
+
         serializer = UserSerializer(team_lead, many=True)
+
         return Response(serializer.data,status=status.HTTP_200_OK)
         
     def post(self, request, format=None):
@@ -37,7 +40,7 @@ class StaffListCreate(APIView):
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():   
-            serializer.save(is_staff = True)
+            serializer.save(is_staff = True,role='staff')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
  
@@ -52,7 +55,7 @@ class FrontOfficeListCreate(APIView):
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():   
-            serializer.save(is_frontoffice = True)
+            serializer.save(is_frontoffice = True,role='frontoffice')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
@@ -75,18 +78,6 @@ class HRListCreate(APIView):
 
 ################################################################# intern ###################################################
 
-class InternListCreate(APIView):
-    def get(self, request, format=None):
-        intern = User.objects.filter(is_intern = True)
-        serializer = UserSerializer(intern, many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
-        
-    def post(self, request, format=None):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():   
-            serializer.save(is_intern = True)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
 
@@ -159,17 +150,5 @@ class LoginFrontoffice(APIView):
             return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
         return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
     
-    
 
-class LoginIntern(APIView):
-    def post(self,request,format=None):
-        data=request.data
-        username=data.get('username')
-        password=data.get('password')
-        
-        intern=authenticate(request,username=username,password=password)
-        if intern and intern.is_intern==True:
-            serializer=UserSerializer(intern)
-            token,created=Token.objects.get_or_create(user=intern)
-            return Response({"user":serializer.data,"token":token.key},status=status.HTTP_200_OK)
-        return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
+
