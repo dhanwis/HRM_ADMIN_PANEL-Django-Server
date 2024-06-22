@@ -6,8 +6,10 @@ urlpatterns = [
     path('teamleadupdate/<int:teamlead_id>',TeamLeadAssignUpdate.as_view(),name='Teamleadupdate'),
     path('teamleadassign/<int:teamlead_id>',TeamLeadAssignDelete.as_view(),name='Teamleaddelete'),
     path('studentassign/',StudentAssignlistCreate.as_view(),name='StudentAssignlistCreate'),
+    path('studentassign/<int:pk>/update-status/',StudentStatusUpdateView.as_view(),name='update_studentassign_status'),
     path('studentassigndelete/<int:student_id>/',StudentAssignDelete.as_view(),name="studenttaskdelete"),
     path('projectassign/',AssignProjectCreate.as_view(),name='projectassign'),
+    path('projectassign/<int:pk>/update-status/',AssignProjectStatusUpdate.as_view(),name='update_projectassign_status'),
     path('leaverequest/', LeaveLetterCreate.as_view(), name='submit_leave_request'),
     path('leave/list/', LeaveListView.as_view(), name='leave-list'),
     path('leave/update/<int:pk>/', LeaveUpdateView.as_view(), name='leave-update'),
@@ -24,7 +26,6 @@ urlpatterns = [
     path('frontoffice/quotationupdate/<int:quatation_id>/',QuatationUpdate.as_view(),name='quotationupdate'),
     path('frontoffice/quotationdelete/<int:quatation_id>/',QuatationDelete.as_view(),name='quotationdelete'),
     
-
 
 
 

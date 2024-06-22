@@ -57,8 +57,6 @@ class TeamLeadAssignDelete(APIView):
             return Response({"message":"Teamlead deleted succesfully"},status=status.HTTP_204_NO_CONTENT)
         except ObjectDoesNotExist:
             return Response({"error":"Teamlead not found"},status=status.HTTP_404_NOT_FOUND)
-        
-        
 
 class StudentAssignlistCreate(APIView):
     def get(self, request, format=None):
@@ -73,7 +71,28 @@ class StudentAssignlistCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
+class StudentStatusUpdateView(APIView):
+    def patch(self, request, pk):
+        try:
+            student_assign = StudentAssign.objects.get(pk=pk)
+        except StudentAssign.DoesNotExist:
+            return Response({"error": "StudentAssign not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        if student_assign.status == 'Completed':
+            return Response({"error": "Cannot modify a completed task"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        action = request.data.get('action')
+        
+        if action == 'start':
+            student_assign.status = 'In progress'
+        elif action == 'end':
+            student_assign.status = 'Completed'
+        else:
+            return Response({"error": "Invalid action"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        student_assign.save()
+        serializer = StudentStatusUpdateSerializer(student_assign)
+        return Response(serializer.data)
 
 class StudentAssignDelete(APIView):
     def get(self,request,student_id,format=None):
@@ -104,6 +123,32 @@ class AssignProjectCreate(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class AssignProjectStatusUpdate(APIView) :
+    def patch(self, request, pk) :
+        try :
+            project_assign = AssignProject.objects.get(pk=pk)
+        except AssignProject.DoesNotExist:
+            return Response({"error" : "project assign not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        if project_assign.status == 'Completed' :
+            return Response({"error" : "Cannot modify the completed task"})
+        
+        action = request.data.get('action')
+
+        if action == 'start' :
+            project_assign.status = 'In progress'
+        elif action == 'end' :
+            project_assign.status = 'Completed'
+        else :
+            return Response({"error": "Invalid action"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        project_assign.save()
+        serializer = AssignProjectUpdateSerializer(project_assign)
+        return Response(serializer.data)
+
+
+
 
 # class Process_Leave_Request(APIView):
 
@@ -152,9 +197,6 @@ class LeaveListView(generics.ListAPIView):
     serializer_class = LeaveListSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]
-
-
-
 
 class LeaveUpdateView(generics.UpdateAPIView):
     queryset = Leave.objects.all()
