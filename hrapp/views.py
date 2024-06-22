@@ -165,3 +165,96 @@ class LeaveUpdateView(generics.UpdateAPIView):
     def get_queryset(self):
         return self.queryset.filter(status='Pending')
     
+
+
+class NotesSharinglistCreate(APIView):
+    def get(self, request, format=None):
+        notes=Noteupload.objects.all()
+        serializer= NotesSharingSerializer(notes,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = NotesSharingSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+class StatusSharinglistCreate(APIView):
+    def get(self, request, format=None):
+        statusshare=StatusShare.objects.all()
+        serializer= StatusShareSerializer(statusshare,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = StatusShareSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+########################## digital marketing table create ###################################################################################
+
+class DigitalTableCreate(APIView):
+    def get(self, request, format=None):
+        digital_table=DigitalTable.objects.all()
+        serializer= DigitalTableSerializer(digital_table,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = DigitalTableSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+    
+    
+################### digital marketing table update ##########################################################################################
+
+
+class DigitalTableUpdate(APIView):
+    def get(self,request,digital_id,format=None):
+        digtaltable=DigitalTable.objects.get(id=digital_id)
+        serializer=DigitalTableSerializer(digtaltable)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    def patch(self,request,digital_id,format=None):
+        digtaltable=DigitalTable.objects.get(id=digital_id)
+        serializer=DigitalTableSerializer(digtaltable,data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+    
+####################################### digital marketing table deletion #################################################################
+
+
+class DigitalTableDelete(APIView):
+    def get(self,request,digital_id,format=None):
+        try:
+            digitaltable=DigitalTable.objects.get(id=digital_id)
+            serializer=DigitalTableSerializer(digitaltable)
+            return Response(serializer.data,status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({"error":"table  not found"},status=status.HTTP_404_NOT_FOUND)
+    def delete(self,request,digital_id,format=None):
+        try:
+            digitaltable=DigitalTable.objects.get(id=digital_id)
+            digitaltable.delete()
+            return Response({"message":"table deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist:
+            return Response({"error":" table not found"},status=status.HTTP_404_NOT_FOUND)
+        
+class JobApplyCreate(APIView):
+    def get(self, request, format=None):
+        job_apply=JobApply.objects.all()
+        serializer= JobApplySerializer(job_apply,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = JobApplySerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

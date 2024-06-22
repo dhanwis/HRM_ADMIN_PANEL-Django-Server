@@ -48,3 +48,26 @@ class LeaveListSerializer(serializers.ModelSerializer):
 
     def get_name(self, obj):
         return obj.name.groups.first().name if obj.name.groups.exists() else 'No Role'
+    
+
+
+    
+class NotesSharingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=AssignProject
+        fields='__all__'
+
+class StatusShareSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=AssignProject
+        fields='__all__'
+
+class DigitalTableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=DigitalTable
+        fields='__all__'
+
+class JobApplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model=JobApply
+        fields='__all__'
