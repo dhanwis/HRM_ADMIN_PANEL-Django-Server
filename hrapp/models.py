@@ -3,8 +3,7 @@ from authapp.models import User
 import datetime
 # Create your models here.
 
-
-class TeamleadAssign(models.Model):
+class TeamleadAssign(models.Model):  # hr to teamlead
     user = models.ForeignKey(User,models.CASCADE, limit_choices_to={'is_teamlead':True})
     tasktitle = models.CharField(max_length=100)
     startdate = models.DateField(max_length=100,null=True,blank=True)
@@ -13,11 +12,11 @@ class TeamleadAssign(models.Model):
     def __str__(self):
         return self.user.username
     
-    
-    
-
-
-class StudentAssign(models.Model):
+class StudentAssign(models.Model):   #team lead to intern
+    STATUS_CHOICE = (("Pending", "Pending"),
+                    ("In progress", "In progress"),
+                    ("Completed", "Completed"))
+    status = models.CharField(max_length=20, choices=STATUS_CHOICE, default='Pending')
     time_slot=models.TimeField(default=datetime.time(0, 0))
     student_name=models.ForeignKey(User,models.CASCADE,limit_choices_to={'is_intern':True},to_field='username')
     task_name=models.CharField(max_length=100,null=True,blank=True)
@@ -29,15 +28,17 @@ class StudentAssign(models.Model):
         
         return self.student_name.username
 
-
-class AssignProject(models.Model):
+class AssignProject(models.Model):  # team lead to staff
+    STATUS_CHOICE = (("Pending", "Pending"),
+                    ("In progress", "In progress"),
+                    ("Completed", "Completed"))
+    status = models.CharField(max_length=20, choices=STATUS_CHOICE, default='Pending')
     projectname=models.CharField(max_length=100,blank=True)
     employeename=models.ForeignKey(User,models.CASCADE,limit_choices_to={'is_staff':True},to_field='username')
     projectdate=models.DateField()
     deadline=models.DateField()
     def __str__(self):
         return self.projectname
-
 
 class Leave(models.Model):
     STATUS_CHOICES = [
@@ -58,7 +59,6 @@ class Leave(models.Model):
 
     def __str__(self):
         return f'Leave from {self.name.username}'
-
 
 # class LeaveRequestConformation(models.Model):
 #     STATUS_CHOICES = [

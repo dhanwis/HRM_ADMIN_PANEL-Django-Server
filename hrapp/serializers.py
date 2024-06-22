@@ -1,26 +1,31 @@
 from rest_framework import serializers
 from .models import *
 
-
-
 class TeamLeadAssignSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamleadAssign
         fields = '__all__'
         # extra_kwargs = {'password':{'write_only':True}}
-        
-        
-        
+           
 class StudentAssignSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentAssign
         fields = '__all__'
 
+class StudentStatusUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentAssign  
+        fields = ['status']
 
 class AssignProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model=AssignProject
         fields='__all__'
+
+class AssignProjectUpdateSerializer(serializers.ModelSerializer) :
+    class Meta :
+        model = AssignProject
+        fields = ['status']
 
 class LeaveSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,7 +49,6 @@ class LeaveListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Leave
         fields = ['id','name', 'start_date', 'end_date', 'description', 'duration_days', 'status','role']
-
 
     def get_name(self, obj):
         return obj.name.groups.first().name if obj.name.groups.exists() else 'No Role'
