@@ -14,6 +14,15 @@ urlpatterns = [ path('Teamlead/', TeamLeadListCreate.as_view(), name="team-lead"
     path('frontofficelogin/',LoginFrontoffice.as_view(), name="frontofficelogin"),
     # path('internlogin/',LoginIntern.as_view(), name="internlogin"),
     path('intern-reg/',InternCreateView.as_view(), name="inter-reg"),
-    path('intern-login/',InternLoginView.as_view(), name='intern-login')
+    path('intern-login/',InternLoginView.as_view(), name='intern-login'),
+    path('intern/reference/',ReferencelistCreate.as_view(),name="internreference"),
+    path('intern/referenceupdate/<int:reference_id>',ReferencelistCreate.as_view(),name="internreference"),
+    path('intern/feedback/',FeedbackListCreateView.as_view(),name="internfeedback"),
+    path('intern/testimonal',TestimonialListCreateView.as_view(),name="interntestimonal"),
+
+
+
+
+
 ]
 

@@ -75,3 +75,16 @@ class JobApplySerializer(serializers.ModelSerializer):
     class Meta:
         model=JobApply
         fields='__all__'
+
+
+class CallsheetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=callsheet
+        fields='__all__'
+
+
+
+class QuatationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=quotation
+        fields='__all__'

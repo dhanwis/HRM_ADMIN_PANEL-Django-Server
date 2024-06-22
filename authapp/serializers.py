@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, UserProfile
+from .models import *
 from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
@@ -62,3 +62,22 @@ class UserInternSerializer(serializers.ModelSerializer):
         profile_data = InternSerializer(instance.userprofile).data
         representation['profile'] = profile_data
         return representation
+    
+
+
+class ReferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Reference
+        fields='__all__'
+
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Feedback
+        fields='__all__'
+
+
+class TestimonialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Testimonial
+        fields='__all__'
