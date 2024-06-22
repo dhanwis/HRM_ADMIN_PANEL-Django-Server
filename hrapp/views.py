@@ -258,3 +258,120 @@ class JobApplyCreate(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class CallsheetCreate(APIView):
+    def get(self, request, format=None):
+        call_sheet=callsheet.objects.all()
+        serializer= CallsheetSerializer(call_sheet,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = CallsheetSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+############################################################### callsheet creation ################################################
+
+
+class CallsheetCreate(APIView):
+    def get(self, request, format=None):
+        call_sheet=callsheet.objects.all()
+        serializer= CallsheetSerializer(call_sheet,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = CallsheetSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+############################################################### callsheet update ####################################################
+
+class CallsheetUpdate(APIView):
+    def get(self,request,callsheet_id,format=None):
+        call_sheet=callsheet.objects.get(id=callsheet_id)
+        serializer=CallsheetSerializer(call_sheet)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    def patch(self,request,callsheet_id,format=None):
+        call_sheet=callsheet.objects.get(id=callsheet_id)
+        serializer=CallsheetSerializer(call_sheet,data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    
+############################################################### callsheet delete #################################################
+
+class CallsheetDelete(APIView):
+    def get(self,request,callsheet_id,format=None):
+        try:
+           call_sheet=callsheet.objects.get(id=callsheet_id)
+           serializer=CallsheetSerializer(call_sheet)
+           return Response(serializer.data,status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({"error":"Project not found"},status=status.HTTP_404_NOT_FOUND)
+    def delete(self,request,callsheet_id,format=None):
+        try:
+            call_sheet=callsheet.objects.get(id=callsheet_id)
+            call_sheet.delete()
+            return Response({"message":"Project deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist:
+            return Response({"error":"Project not found"},status=status.HTTP_404_NOT_FOUND)
+
+################################################################ quatation creatation ##############################################
+
+class QuatationCreate(APIView):
+    def get(self, request, format=None):
+        quatation_create=quotation.objects.all()
+        serializer= QuatationSerializer(quatation_create,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = QuatationSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+################# quatation update ############
+
+
+class QuatationUpdate(APIView):
+    def get(self,request,quatation_id,format=None):
+        quatation_update=quotation.objects.get(id=quatation_id)
+        serializer=QuatationSerializer(quatation_update)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    def patch(self,request,quatation_id,format=None):
+        quatation_update=quotation.objects.get(id=quatation_id)
+        serializer=QuatationSerializer(quatation_update,data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    
+ ######################quatation delete ####################
+
+class QuatationDelete(APIView):
+    def get(self,request,quatation_id,format=None):
+        try:
+           quatation_delete=quotation.objects.get(id=quatation_id)
+           serializer=QuatationSerializer(quatation_delete)
+           return Response(serializer.data,status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({"error":"Project not found"},status=status.HTTP_404_NOT_FOUND)
+    def delete(self,request,quatation_id,format=None):
+        try:
+            quotation_delete=quotation.objects.get(id=quatation_id)
+            quotation_delete.delete()
+            return Response({"message":"Project deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist:
+            return Response({"error":"Project not found"},status=status.HTTP_404_NOT_FOUND)

@@ -146,3 +146,46 @@ class JobApply(models.Model):
     last_date  = models.DateField(null=True,blank=True)
     def str(self):
         return self.job_title
+    
+class callsheet(models.Model):
+    company_name = models.CharField(max_length=100,null=True,blank=True)
+    customer_name = models.CharField(max_length=100,null=True,blank=True)
+    project_name = models.CharField(max_length=100,null=True,blank=True)
+    phone_number = models.CharField(max_length=100,null=True,blank=True)
+    start_date = models.DateField(max_length=100,null=True,blank=True)
+    end_date = models.DateField(max_length=100,null=True,blank=True)
+    
+    def _str_(self):
+        return self.company_name
+    
+
+class quotation(models.Model):
+    company_name = models.CharField(max_length=100,null=True,blank=True)
+    introduction = models.CharField(max_length=100,null=True,blank=True)
+    issued_by = models.CharField(max_length=100,null=True,blank=True)
+    customer_name = models.CharField(max_length=100,null=True,blank=True)
+    add_on = models.DateField(max_length=100,null=True,blank=True)
+    expired_on = models.DateField(max_length=100,null=True,blank=True)
+    
+    WEB_APP_DEVELOPMENT = 'web_app_development'
+    MOBILE_APP_DEVELOPMENT = 'mobile_app_development'
+    DIGITAL_MARKETING = 'digital_marketing'
+    
+    QUOTATION_CHOICES = [
+        (WEB_APP_DEVELOPMENT, 'Web App Development'),
+        (MOBILE_APP_DEVELOPMENT, 'Mobile App Development'),
+        (DIGITAL_MARKETING, 'Digital Marketing'),
+        
+    
+    
+    ]
+  
+    quatation_type = models.CharField(max_length=50,choices=QUOTATION_CHOICES,default=WEB_APP_DEVELOPMENT)
+    
+    development_charge = models.IntegerField(null=True,blank=True)
+    gst_amount = models.FloatField(max_length=100,null=True,blank=True)   
+    total_amount = models.FloatField(max_length=100,null=True,blank=True)        
+   
+    def _str_(self):
+        return self.company_name
+    

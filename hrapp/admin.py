@@ -9,4 +9,9 @@ admin.site.register(Noteupload)
 admin.site.register(StatusShare)
 admin.site.register(DigitalTable)
 admin.site.register(JobApply)
+admin.site.register(callsheet)
+admin.site.register(quotation)
+
+
+
 
