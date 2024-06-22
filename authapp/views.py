@@ -5,7 +5,7 @@ from rest_framework import status
 from .serializers import *
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate,login
-from .models import User, UserProfile
+from .models import *
 
 # Create your views here.
 
@@ -177,4 +177,69 @@ class LoginFrontoffice(APIView):
         return Response({"details":"invalid credentials"},status=status.HTTP_400_BAD_REQUEST)
     
 
+
+class ReferencelistCreate(APIView):
+    def get(self, request, format=None):
+        reference=Reference.objects.all()
+        serializer= ReferenceSerializer(reference,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = ReferenceSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ReferenceUpdate(APIView):
+    def get(self,request,reference_id,format=None):
+        reference=Reference.objects.get(id=reference_id)
+        serializer=ReferenceSerializer(reference )
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    def patch(self,request,reference_id,format=None):
+        reference=Reference.objects.get(id=reference_id)
+        serializer=ReferenceSerializer(reference,data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+############################################    Fee    ############################################################################
+
+# class FeelistCreate(APIView):
+#     def get(self, request, format=None):
+#         fee=Fee.objects.all()
+#         serializer= FeedbackSerializer(fee,many=True)
+#         return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    
+##################################################Feedback#####################################################################
+
+class FeedbackListCreateView(APIView):
+    def get(self, request, format=None):
+        feedback = Feedback.objects.all()
+        serializer = FeedbackSerializer(feedback, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+        
+    def post(self, request, format=None):
+        serializer = FeedbackSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+#####################################################Testimonial##################################################################
+
+class TestimonialListCreateView(APIView):
+    def get(self, request, format=None):
+        testimonial = testimonial.objects.all()
+        serializer = TestimonialSerializer(testimonial, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+        
+    def post(self, request, format=None):
+        serializer = TestimonialSerializer(data=request.data)
+        if serializer.is_valid():   
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

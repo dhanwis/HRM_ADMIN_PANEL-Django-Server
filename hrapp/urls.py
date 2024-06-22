@@ -14,9 +14,20 @@ urlpatterns = [
     path('staff/noteshare/',NotesSharinglistCreate.as_view(),name="notesharingto intern"),
     path('staff/statusshare/',StatusSharinglistCreate.as_view(),name="statussharetoteamlead"),
     path('teamlead/digitalmarketcreate/',DigitalTableCreate.as_view(),name="digitalmarketcreate"),
-    path('teamlead/digitalmarketupdate/<int:digital_id>',DigitalTableUpdate.as_view(),name="digitalmarketupdate"),
-    path('teamlead/digitalmarketdelete/<int:digital_id>',DigitalTableDelete.as_view(),name="digitalmarketupdate"),
+    path('teamlead/digitalmarketupdate/<int:digital_id>/',DigitalTableUpdate.as_view(),name="digitalmarketupdate"),
+    path('teamlead/digitalmarketdelete/<int:digital_id>/',DigitalTableDelete.as_view(),name="digitalmarketupdate"),
     path('hr/jobapply/',JobApplyCreate.as_view(),name='hrjobalert'),
+    path('frontoffice/callsheet/',CallsheetCreate.as_view(),name='callsheetcreate'),
+    path('frontoffice/callsheetupdate/<int:callsheet_id>/',CallsheetUpdate.as_view(),name='callsheetupdate'),
+    path('frontoffice/callsheetdelete/<int:callsheet_id>/',CallsheetDelete.as_view(),name='callsheetdelete'),
+    path('frontoffice/quotationcreate/',QuatationCreate.as_view(),name='quotationcreate'),
+    path('frontoffice/quotationupdate/<int:quatation_id>/',QuatationUpdate.as_view(),name='quotationupdate'),
+    path('frontoffice/quotationdelete/<int:quatation_id>/',QuatationDelete.as_view(),name='quotationdelete'),
+    
+
+
+
+
 
 
 ]

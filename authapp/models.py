@@ -46,5 +46,20 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
     
-    
 
+class Reference(models.Model):      
+    name=models.CharField(max_length=100, null=True,blank=True)
+    email=models.CharField(max_length=100,null=True,blank=True)
+    phone = models.CharField(max_length=100, null=True,blank=True)
+    location =  models.CharField(max_length=100, null=True,blank=True)
+    education =  models.CharField(max_length=100, null=True,blank=True)
+
+    def _str_(self):
+        return self.name   
+    
+    
+class Feedback(models.Model):
+    feedback = models.CharField(max_length=500,null=True,blank=True)
+    
+class Testimonial(models.Model):
+    testimonial = models.CharField(max_length=500,null=True,blank=True)
