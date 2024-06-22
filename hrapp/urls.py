@@ -11,6 +11,13 @@ urlpatterns = [
     path('leaverequest/', LeaveLetterCreate.as_view(), name='submit_leave_request'),
     path('leave/list/', LeaveListView.as_view(), name='leave-list'),
     path('leave/update/<int:pk>/', LeaveUpdateView.as_view(), name='leave-update'),
+    path('staff/noteshare/',NotesSharinglistCreate.as_view(),name="notesharingto intern"),
+    path('staff/statusshare/',StatusSharinglistCreate.as_view(),name="statussharetoteamlead"),
+    path('teamlead/digitalmarketcreate/',DigitalTableCreate.as_view(),name="digitalmarketcreate"),
+    path('teamlead/digitalmarketupdate/<int:digital_id>',DigitalTableUpdate.as_view(),name="digitalmarketupdate"),
+    path('teamlead/digitalmarketdelete/<int:digital_id>',DigitalTableDelete.as_view(),name="digitalmarketupdate"),
+    path('hr/jobapply/',JobApplyCreate.as_view(),name='hrjobalert'),
+
 
 ]
 

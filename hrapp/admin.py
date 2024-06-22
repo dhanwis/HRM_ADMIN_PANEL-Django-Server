@@ -5,4 +5,8 @@ admin.site.register(TeamleadAssign)
 admin.site.register(StudentAssign)  
 admin.site.register(AssignProject)
 admin.site.register(Leave)
+admin.site.register(Noteupload)
+admin.site.register(StatusShare)
+admin.site.register(DigitalTable)
+admin.site.register(JobApply)
 
