@@ -9,6 +9,8 @@ from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 class TeamLeadAssignCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         team_lead = TeamleadAssign.objects.all()
         serializer = TeamLeadAssignSerializer(team_lead, many=True)
@@ -24,6 +26,8 @@ class TeamLeadAssignCreate(APIView):
     
     
 class TeamLeadAssignUpdate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self,request,teamlead_id,format=None):
         team=TeamleadAssign.objects.get(id=teamlead_id)
         serializer=TeamLeadAssignSerializer(team )
@@ -43,6 +47,9 @@ class TeamLeadAssignUpdate(APIView):
 #############################DELETE####################
 
 class TeamLeadAssignDelete(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+
     def get(self,request,teamlead_id,format=None):
         try:
             team_lead=TeamleadAssign.objects.get(id=teamlead_id)
@@ -59,6 +66,8 @@ class TeamLeadAssignDelete(APIView):
             return Response({"error":"Teamlead not found"},status=status.HTTP_404_NOT_FOUND)
 
 class StudentAssignlistCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         student_assign=StudentAssign.objects.all()
         serializer= StudentAssignSerializer(student_assign,many=True)
@@ -72,6 +81,8 @@ class StudentAssignlistCreate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class StudentStatusUpdateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def patch(self, request, pk):
         try:
             student_assign = StudentAssign.objects.get(pk=pk)
@@ -95,6 +106,8 @@ class StudentStatusUpdateView(APIView):
         return Response(serializer.data)
 
 class StudentAssignDelete(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self,request,student_id,format=None):
         try:
             student_assign=StudentAssign.objects.get(id=student_id)
@@ -112,6 +125,8 @@ class StudentAssignDelete(APIView):
     
 
 class AssignProjectCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         project_assign=AssignProject.objects.all()
         serializer=AssignProjectSerializer(project_assign,many=True)
@@ -125,6 +140,8 @@ class AssignProjectCreate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class AssignProjectStatusUpdate(APIView) :
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def patch(self, request, pk) :
         try :
             project_assign = AssignProject.objects.get(pk=pk)
@@ -210,6 +227,8 @@ class LeaveUpdateView(generics.UpdateAPIView):
 
 
 class NotesSharinglistCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         notes=Noteupload.objects.all()
         serializer= NotesSharingSerializer(notes,many=True)
@@ -217,14 +236,14 @@ class NotesSharinglistCreate(APIView):
     
     def post(self, request, format=None):
         serializer = NotesSharingSerializer(data=request.data)
-        if serializer.is_valid():   
+        if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
 
 class StatusSharinglistCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         statusshare=StatusShare.objects.all()
         serializer= StatusShareSerializer(statusshare,many=True)
@@ -240,6 +259,8 @@ class StatusSharinglistCreate(APIView):
 ########################## digital marketing table create ###################################################################################
 
 class DigitalTableCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         digital_table=DigitalTable.objects.all()
         serializer= DigitalTableSerializer(digital_table,many=True)
@@ -257,6 +278,8 @@ class DigitalTableCreate(APIView):
 
 
 class DigitalTableUpdate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self,request,digital_id,format=None):
         digtaltable=DigitalTable.objects.get(id=digital_id)
         serializer=DigitalTableSerializer(digtaltable)
@@ -273,6 +296,8 @@ class DigitalTableUpdate(APIView):
 
 
 class DigitalTableDelete(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self,request,digital_id,format=None):
         try:
             digitaltable=DigitalTable.objects.get(id=digital_id)
@@ -289,6 +314,8 @@ class DigitalTableDelete(APIView):
             return Response({"error":" table not found"},status=status.HTTP_404_NOT_FOUND)
         
 class JobApplyCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         job_apply=JobApply.objects.all()
         serializer= JobApplySerializer(job_apply,many=True)
@@ -303,6 +330,8 @@ class JobApplyCreate(APIView):
     
 
 class CallsheetCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         call_sheet=callsheet.objects.all()
         serializer= CallsheetSerializer(call_sheet,many=True)
@@ -321,6 +350,8 @@ class CallsheetCreate(APIView):
 
 
 class CallsheetCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         call_sheet=callsheet.objects.all()
         serializer= CallsheetSerializer(call_sheet,many=True)
@@ -337,6 +368,8 @@ class CallsheetCreate(APIView):
 ############################################################### callsheet update ####################################################
 
 class CallsheetUpdate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self,request,callsheet_id,format=None):
         call_sheet=callsheet.objects.get(id=callsheet_id)
         serializer=CallsheetSerializer(call_sheet)
@@ -371,6 +404,8 @@ class CallsheetDelete(APIView):
 ################################################################ quatation creatation ##############################################
 
 class QuatationCreate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         quatation_create=quotation.objects.all()
         serializer= QuatationSerializer(quatation_create,many=True)
@@ -387,6 +422,8 @@ class QuatationCreate(APIView):
 
 
 class QuatationUpdate(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self,request,quatation_id,format=None):
         quatation_update=quotation.objects.get(id=quatation_id)
         serializer=QuatationSerializer(quatation_update)
@@ -403,6 +440,8 @@ class QuatationUpdate(APIView):
  ######################quatation delete ####################
 
 class QuatationDelete(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self,request,quatation_id,format=None):
         try:
            quatation_delete=quotation.objects.get(id=quatation_id)

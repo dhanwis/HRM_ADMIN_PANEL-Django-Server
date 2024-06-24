@@ -6,6 +6,8 @@ from .serializers import *
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate,login
 from .models import *
+from rest_framework.authentication import TokenAuthentication
+from rest_framework import  permissions
 
 # Create your views here.
 
@@ -216,6 +218,8 @@ class ReferenceUpdate(APIView):
 ##################################################Feedback#####################################################################
 
 class FeedbackListCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         feedback = Feedback.objects.all()
         serializer = FeedbackSerializer(feedback, many=True)
@@ -231,6 +235,8 @@ class FeedbackListCreateView(APIView):
 #####################################################Testimonial##################################################################
 
 class TestimonialListCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
         testimonial = testimonial.objects.all()
         serializer = TestimonialSerializer(testimonial, many=True)
