@@ -58,12 +58,12 @@ class LeaveListSerializer(serializers.ModelSerializer):
     
 class NotesSharingSerializer(serializers.ModelSerializer):
     class Meta:
-        model=AssignProject
+        model=Noteupload
         fields='__all__'
 
 class StatusShareSerializer(serializers.ModelSerializer):
     class Meta:
-        model=AssignProject
+        model=StatusShare
         fields='__all__'
 
 class DigitalTableSerializer(serializers.ModelSerializer):
