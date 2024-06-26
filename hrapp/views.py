@@ -80,6 +80,23 @@ class StudentAssignlistCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+class StudentTaskView(APIView) :
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+    serializer_class = StudentAssignSerializer
+
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated and user.is_intern:
+            return StudentAssign.objects.filter(student_name=user)
+        return StudentAssign.objects.none()
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+    
 class StudentStatusUpdateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]

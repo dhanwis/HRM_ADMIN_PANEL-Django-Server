@@ -11,8 +11,15 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+    
+class InstallmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Installments
+        fields = ['amount', 'date']
 
 class InternSerializer(serializers.ModelSerializer):
+    installments = InstallmentSerializer(many=True, required=False)
+
     class Meta:
         model = UserProfile
         fields = [
@@ -25,8 +32,17 @@ class InternSerializer(serializers.ModelSerializer):
             'payment',
             'payment_date',
             'total_amount',
-            'no_of_installments'
+            'no_of_installments',
+            'installments'
         ]
+
+    def create(self, validated_data):
+        installments_data = validated_data.pop('installments', [])
+        user_profile = UserProfile.objects.create(**validated_data)
+        for installment_data in installments_data:
+            Installments.objects.create(user_profile=user_profile, **installment_data)
+        return user_profile
+
 
 class UserInternSerializer(serializers.ModelSerializer):
     profile = InternSerializer(write_only=True)
@@ -50,11 +66,20 @@ class UserInternSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         profile_data = validated_data.pop('profile')
+        installments_data = profile_data.pop('installments', [])  # Extract installments data if present
+
+        # Create User instance
         user = User.objects.create_user(**validated_data)
         user.is_intern = True
         user.save()
+
+        # Create UserProfile instance
         user_profile = UserProfile.objects.create(user=user, **profile_data)
-        user_profile.save()
+
+        # Create Installments instances and associate them with UserProfile
+        for installment_data in installments_data:
+            Installments.objects.create(user_profile=user_profile, **installment_data)
+
         return user
     
     def to_representation(self, instance):
@@ -72,7 +97,7 @@ class ReferenceSerializer(serializers.ModelSerializer):
 
 
 class FeedbackSerializer(serializers.ModelSerializer):
-    class Meta:
+    class Meta: 
         model=Feedback
         fields='__all__'
 
@@ -81,3 +106,7 @@ class TestimonialSerializer(serializers.ModelSerializer):
     class Meta:
         model=Testimonial
         fields='__all__'
+
+
+
+

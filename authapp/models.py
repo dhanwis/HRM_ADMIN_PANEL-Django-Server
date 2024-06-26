@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser): 
     is_hr= models.BooleanField(default=False)
     is_teamlead = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)   
     is_frontoffice = models.BooleanField(default=False)
     is_intern = models.BooleanField(default=False)
     phone_number = models.CharField(max_length=12,null=True,blank=True)
@@ -63,3 +63,14 @@ class Feedback(models.Model):
     
 class Testimonial(models.Model):
     testimonial = models.CharField(max_length=500,null=True,blank=True)
+
+
+######################## installments ###################
+
+class Installments(models.Model) :
+    user_profile = models.ForeignKey(UserProfile, related_name='installments', on_delete=models.CASCADE)    
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateField()
+
+    def __str__(self) :
+        return f'{self.user_profile.user.username} - {self.amount} on {self.date}'

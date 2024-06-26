@@ -6,6 +6,7 @@ urlpatterns = [
     path('teamleadupdate/<int:teamlead_id>',TeamLeadAssignUpdate.as_view(),name='Teamleadupdate'),
     path('teamleadassign/<int:teamlead_id>',TeamLeadAssignDelete.as_view(),name='Teamleaddelete'),
     path('studentassign/',StudentAssignlistCreate.as_view(),name='StudentAssignlistCreate'),
+    path('studenttaskview/',StudentTaskView.as_view(),name='StudentTaskView'),
     path('studentassign/<int:pk>/update-status/',StudentStatusUpdateView.as_view(),name='update_studentassign_status'),
     path('studentassigndelete/<int:student_id>/',StudentAssignDelete.as_view(),name="studenttaskdelete"),
     path('projectassign/',AssignProjectCreate.as_view(),name='projectassign'),
