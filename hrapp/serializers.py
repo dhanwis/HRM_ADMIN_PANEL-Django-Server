@@ -88,3 +88,17 @@ class QuatationSerializer(serializers.ModelSerializer):
     class Meta:
         model=quotation
         fields='__all__'
+
+   
+class MachineAllocateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MachineAllocate
+        fields = ['id', 'student', 'course', 'timeslot', 'machine', 'vacate']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['student'] = instance.student.username
+        representation['timeslot'] = instance.timeslot.time_slot.strftime('%H:%M')
+        return representation
+    
+

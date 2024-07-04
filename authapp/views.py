@@ -82,6 +82,11 @@ class HRListCreate(APIView):
     
 
 class InternCreateView(APIView):
+    def get(self, request, format=None):
+        hr = User.objects.filter(is_intern = True)
+        serializer = UserInternSerializer(hr, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+        
     def post(self, request, *args, **kwargs):
         serializer = UserInternSerializer(data=request.data)
 

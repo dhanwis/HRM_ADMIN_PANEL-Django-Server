@@ -11,6 +11,7 @@ admin.site.register(DigitalTable)
 admin.site.register(JobApply)
 admin.site.register(callsheet)
 admin.site.register(quotation)
+admin.site.register(MachineAllocate)
 
 
 
