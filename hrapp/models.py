@@ -1,5 +1,5 @@
 from django.db import models
-from authapp.models import User
+from authapp.models import*
 import datetime
 # Create your models here.
 
@@ -25,8 +25,13 @@ class StudentAssign(models.Model):   #team lead to intern
     start_date=models.DateField()   
     end_date=models.DateField()
     def __str__(self):
-        
         return self.student_name.username
+    
+
+    def __str__(self):
+        return self.time_slot.strftime('%H:%M')
+    
+
 
 class AssignProject(models.Model):  # team lead to staff
     STATUS_CHOICE = (("Pending", "Pending"),
@@ -97,7 +102,6 @@ class StatusShare(models.Model):
     Teamleadname = models.ForeignKey(User, models.CASCADE, limit_choices_to={'is_teamlead': True})
     description = models.CharField(max_length=100, null=True, blank=True)
     note_upload = models.FileField(upload_to='uploads/')
-
     def _str_(self):
         return self.Teamleadname.username
 
@@ -107,10 +111,8 @@ class Noteupload(models.Model):
     title=models.CharField(max_length=100,null=True,blank=True)
     description=models.CharField(max_length=100,null=True,blank=True)
     student_name=models.ForeignKey(User,models.CASCADE,limit_choices_to={'is_intern':True},to_field='username')
-
-    def str(self):
-
-        return self.student_name.username
+    def __str__(self):
+        return self.title
     
 
 class DigitalTable(models.Model):
@@ -123,7 +125,7 @@ class DigitalTable(models.Model):
     location = models.CharField(max_length=100,null=True,blank=True)
     amount_spend = models.CharField(max_length=100,null=True,blank=True)
     
-    def _str_(self):
+    def __str__(self):
         return self.client_name
     
 
@@ -190,3 +192,12 @@ class quotation(models.Model):
     def _str_(self):
         return self.company_name
     
+class MachineAllocate(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={"is_intern": True})
+    course = models.ForeignKey(UserProfile, on_delete=models.CASCADE,to_field='degree_program', related_name='allocated_courses')
+    timeslot = models.ForeignKey(StudentAssign, on_delete=models.CASCADE,to_field='id')
+    machine = models.IntegerField( unique=True)
+    vacate = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.student} - {self.course} - {self.timeslot} - {self.machine}"                                                                                                            

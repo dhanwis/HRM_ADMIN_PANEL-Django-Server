@@ -25,7 +25,7 @@ class User(AbstractUser):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     university = models.CharField(max_length=100)
-    degree_program = models.CharField(max_length=100)
+    degree_program = models.CharField(max_length=100,unique=True)
     internship_position = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
@@ -45,6 +45,8 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    def __str__(self):
+        return self.degree_program
     
 
 class Reference(models.Model):      

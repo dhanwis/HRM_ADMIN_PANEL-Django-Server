@@ -1,6 +1,11 @@
-from django.urls import path
+from django.urls import path,include
 from .views import *
+from rest_framework.routers import DefaultRouter
 # from api.views import *
+
+
+router = DefaultRouter()
+router.register(r'machine-allocations', MachineAllocateViewSet)
 urlpatterns = [
     path('teamleadassign/',TeamLeadAssignCreate.as_view(),name='Teamleadassign'),
     path('teamleadupdate/<int:teamlead_id>',TeamLeadAssignUpdate.as_view(),name='Teamleadupdate'),
@@ -25,12 +30,10 @@ urlpatterns = [
     path('frontoffice/quotationcreate/',QuatationCreate.as_view(),name='quotationcreate'),
     path('frontoffice/quotationupdate/<int:quatation_id>/',QuatationUpdate.as_view(),name='quotationupdate'),
     path('frontoffice/quotationdelete/<int:quatation_id>/',QuatationDelete.as_view(),name='quotationdelete'),
+    path('', include(router.urls)),
+    path('machineallocate/', MachineAllocateViewSet.as_view({'get': 'list', 'post': 'create', 'put': 'update', 'delete': 'destroy'}))
     
-
-
-
-
-
+    
 ]
 
 

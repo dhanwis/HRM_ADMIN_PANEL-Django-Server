@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import APIView
-from rest_framework import status
+from rest_framework import status,viewsets
 from .serializers import *
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import generics, permissions
@@ -456,3 +456,45 @@ class QuatationDelete(APIView):
             return Response({"message":"Project deleted successfully"},status=status.HTTP_204_NO_CONTENT)
         except ObjectDoesNotExist:
             return Response({"error":"Project not found"},status=status.HTTP_404_NOT_FOUND)
+
+class MachineAllocateViewSet(viewsets.ModelViewSet):
+    queryset = MachineAllocate.objects.all()
+    serializer_class = MachineAllocateSerializer
+
+    def create(self, request, *args, **kwargs):
+        student = request.data.get('student')
+        course = request.data.get('course')
+        timeslot = request.data.get('timeslot')
+        vacate = request.data.get('vacate', False)
+
+        # Check if the student already has an allocation for the timeslot
+        existing_allocation = MachineAllocate.objects.filter(student=student, timeslot=timeslot, vacate=False).first()
+        if existing_allocation:
+            return Response({"error": "Student already has an allocation for this timeslot."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Find an available machine for the given timeslot
+        allocated_machines = MachineAllocate.objects.filter(timeslot=timeslot, vacate=False).values_list('machine', flat=True)
+        available_machine = MachineAllocate.objects.exclude(id__in=allocated_machines).first()
+
+        if not available_machine:
+            return Response({"error": "No available machines for this timeslot."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create new allocation
+        new_allocation = MachineAllocate.objects.create(
+            student_id=student,
+            course_id=course,
+            timeslot_id=timeslot,
+            machine=available_machine,
+            vacate=vacate
+        )
+
+        serializer = self.get_serializer(new_allocation)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.vacate = request.data.get('vacate', instance.vacate)
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
