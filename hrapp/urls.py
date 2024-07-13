@@ -31,9 +31,7 @@ urlpatterns = [
     path('frontoffice/quotationupdate/<int:quatation_id>/',QuatationUpdate.as_view(),name='quotationupdate'),
     path('frontoffice/quotationdelete/<int:quatation_id>/',QuatationDelete.as_view(),name='quotationdelete'),
     path('', include(router.urls)),
-    path('machineallocate/', MachineAllocateViewSet.as_view({'get': 'list', 'post': 'create', 'put': 'update', 'delete': 'destroy'}))
-    
-    
+    path('machineallocate/', MachineAllocateViewSet.as_view({'get': 'list', 'post': 'create', 'put': 'update', 'delete': 'destroy'}))   
 ]
 
 
