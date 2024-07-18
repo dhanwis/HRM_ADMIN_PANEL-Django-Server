@@ -22,6 +22,7 @@ class User(AbstractUser):
     experience = models.CharField(max_length=100,null=True,blank=True)
     
     
+    
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     university = models.CharField(max_length=100)
