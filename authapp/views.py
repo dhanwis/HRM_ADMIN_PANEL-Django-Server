@@ -23,7 +23,6 @@ class TeamLeadListCreate(APIView):
         
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
-        print(request.data)
         if serializer.is_valid():
             serializer.save(is_teamlead = True,role='Teamlead')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
