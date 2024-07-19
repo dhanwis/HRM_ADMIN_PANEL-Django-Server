@@ -4,7 +4,7 @@ import datetime
 # Create your models here.
 
 class TeamleadAssign(models.Model):  # hr to teamlead
-    user = models.ForeignKey(User,models.CASCADE, limit_choices_to={'is_teamlead':True})
+    user = models.ForeignKey(User,models.CASCADE, limit_choices_to={'is_teamlead':True},)
     tasktitle = models.CharField(max_length=100)
     startdate = models.DateField(max_length=100,null=True,blank=True)
     enddate = models.DateField(max_length=100,null=True,blank=True)
@@ -131,8 +131,8 @@ class DigitalTable(models.Model):
 
 class JobApply(models.Model):
     STATUS_CHOICES = [
-        ('work from home','work from home'),
-          ('work from office','work from office'),    
+        ('Work from Home','Work from Home'),
+          ('Work from Office','Work from Office'),    
    ]
     EXPERIENCE_CHOICES = [
         ('0 year','0 year'),
@@ -143,7 +143,7 @@ class JobApply(models.Model):
     company_name = models.CharField(max_length=100,null=True,blank=True)
     job_title=  models.CharField(max_length=100,null=True,blank=True)
     salary = models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
-    mode_of_work  =models.CharField(max_length=100,choices=STATUS_CHOICES,default='work from office',null=True,blank=True)
+    mode_of_work =models.CharField(max_length=100,choices=STATUS_CHOICES,null=True,blank=True)
     location = models.CharField(max_length=100,null=True,blank=True)
     experience  = models.CharField(max_length=100,choices=EXPERIENCE_CHOICES, default='0 year', null=True,blank=True)
     last_date  = models.DateField(null=True,blank=True)
