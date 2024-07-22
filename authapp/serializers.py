@@ -19,9 +19,8 @@ class InternSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = [
-            'university',
-            'degree_program',
-            'internship_position',
+            'educationalQualification',
+            'course',
             'start_date',
             'end_date',
             'category',
@@ -54,7 +53,6 @@ class UserInternSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         profile_data = validated_data.pop('profile')
         user = User.objects.create_user(**validated_data)
-        user.is_intern = True
         user.save()
         user_profile = UserProfile.objects.create(user=user, **profile_data)
         user_profile.save()
