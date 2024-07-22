@@ -74,6 +74,7 @@ class StudentAssignlistCreate(APIView):
         return Response(serializer.data,status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
+        print(request.data)
         serializer = StudentAssignSerializer(data=request.data)
         if serializer.is_valid():   
             serializer.save()
@@ -199,6 +200,7 @@ class LeaveLetterCreate(APIView):
 
     def post(self, request):
         serializer = LeaveSerializer(data=request.data, context={'request': request})
+        print(request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

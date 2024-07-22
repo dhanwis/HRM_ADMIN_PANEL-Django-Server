@@ -88,13 +88,15 @@ class InternCreateView(APIView):
         
     def post(self, request, *args, **kwargs):
         serializer = UserInternSerializer(data=request.data)
-
+        print(request.data)     
         if serializer.is_valid():
-            user = serializer.save()
+            user = serializer.save(is_intern = True,role="intern")
+          
             response_data = {
                 'message': 'Intern registered successfully.',
                 'user': serializer.data
             }
+           
             return Response(response_data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
