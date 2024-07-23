@@ -61,7 +61,7 @@ class TeamLeadAssignDelete(APIView):
         try:
             team_lead=TeamleadAssign.objects.get(id=teamlead_id)
             team_lead.delete()
-            return Response({"message":"Teamlead deleted succesfully"},status=status.HTTP_204_NO_CONTENT)
+            return Response({"message":"Teamlead deleted succesfully"},status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
             return Response({"error":"Teamlead not found"},status=status.HTTP_404_NOT_FOUND)
 
@@ -220,6 +220,7 @@ class LeaveListView(generics.ListAPIView):
 class LeaveUpdateView(generics.UpdateAPIView):
     queryset = Leave.objects.all()
     serializer_class = LeaveUpdateSerializer
+    print(queryset)
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]
 

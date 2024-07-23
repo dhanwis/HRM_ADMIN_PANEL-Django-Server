@@ -18,7 +18,7 @@ urlpatterns = [ path('Teamlead/', TeamLeadListCreate.as_view(), name="team-lead"
     path('intern/referenceupdate/<int:reference_id>',ReferencelistCreate.as_view(),name="internreference"),
     path('intern/feedback/',FeedbackListCreateView.as_view(),name="internfeedback"),
     path('intern/testimonal',TestimonialListCreateView.as_view(),name="interntestimonal"),
-
+    path('users/',Allusers.as_view(),name="alluserexpecthr"),
 
 ]
 
