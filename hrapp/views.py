@@ -457,7 +457,7 @@ class QuatationDelete(APIView):
         try:
             quotation_delete=quotation.objects.get(id=quatation_id)
             quotation_delete.delete()
-            return Response({"message":"Project deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+            return Response({"message":"Project deleted successfully"},status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
             return Response({"error":"Project not found"},status=status.HTTP_404_NOT_FOUND)
 
