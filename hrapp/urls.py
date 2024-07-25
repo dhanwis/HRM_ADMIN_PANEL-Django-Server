@@ -33,8 +33,6 @@ urlpatterns = [
     path('hr/jobapplydelete/<int:job_id>',JobApplyCreate.as_view(),name='hrjobalertdelete'),
     path('', include(router.urls)),
     path('machineallocate/', MachineAllocateViewSet.as_view({'get': 'list', 'post': 'create', 'put': 'update', 'delete': 'destroy'}))
-  
-    
 ]
 
 
