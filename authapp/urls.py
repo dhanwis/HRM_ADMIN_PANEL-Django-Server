@@ -15,10 +15,12 @@ urlpatterns = [ path('Teamlead/', TeamLeadListCreate.as_view(), name="team-lead"
     path('intern-reg/',InternCreateView.as_view(), name="inter-reg"),
     path('intern-login/',InternLoginView.as_view(), name='intern-login'),
     path('intern/reference/',ReferencelistCreate.as_view(),name="internreference"),
-    path('intern/referenceupdate/<int:reference_id>',ReferencelistCreate.as_view(),name="internreference"),
+    path('intern/referencedelete/<int:reference_id>',ReferenceDelete.as_view(),name="internreferencedelete"),
     path('intern/feedback/',FeedbackListCreateView.as_view(),name="internfeedback"),
     path('intern/testimonal',TestimonialListCreateView.as_view(),name="interntestimonal"),
     path('users/',Allusers.as_view(),name="alluserexpecthr"),
+    path('allusers/<int:pk>/', Allusers.as_view(), name='allusers-detail'),
+    
 
 ]
 

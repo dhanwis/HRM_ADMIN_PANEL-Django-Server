@@ -98,7 +98,7 @@ class Leave(models.Model):
 }
 
 class StatusShare(models.Model):
-    projct_name = models.ForeignKey(AssignProject, models.CASCADE, to_field='projectname', related_name='status_shares')
+    project_name = models.ForeignKey(AssignProject, models.CASCADE, to_field='projectname', related_name='status_shares')
     Teamleadname = models.ForeignKey(User, models.CASCADE, limit_choices_to={'is_teamlead': True})
     description = models.CharField(max_length=100, null=True, blank=True)
     note_upload = models.FileField(upload_to='uploads/')
