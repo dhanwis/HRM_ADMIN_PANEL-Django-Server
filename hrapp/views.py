@@ -120,7 +120,7 @@ class StudentAssignDelete(APIView):
         try:
             student_task=StudentAssign.objects.get(id=student_id)
             student_task.delete()
-            return Response({"message":"student task deleted succesfully"},status=status.HTTP_204_NO_CONTENT)
+            return Response({"message":"student task deleted succesfully"},status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
             return Response({"error":"Teamlead not found"},status=status.HTTP_404_NOT_FOUND)
     
@@ -139,6 +139,10 @@ class AssignProjectCreate(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    
+    
     
 class AssignProjectStatusUpdate(APIView) :
     permission_classes = [permissions.IsAuthenticated]
@@ -164,7 +168,14 @@ class AssignProjectStatusUpdate(APIView) :
         project_assign.save()
         serializer = AssignProjectUpdateSerializer(project_assign)
         return Response(serializer.data)
+    def delete(self, request, pk):
+        try:
+            project_assign = AssignProject.objects.get(pk=pk)
+        except AssignProject.DoesNotExist:
+            return Response({"error": "project assign not found"}, status=status.HTTP_204_NO_CONTENT)
 
+        project_assign.delete()
+        return Response({"message": "Project assignment deleted successfully"}, status=status.HTTP_200_OK)
 
 
 
@@ -220,7 +231,6 @@ class LeaveListView(generics.ListAPIView):
 class LeaveUpdateView(generics.UpdateAPIView):
     queryset = Leave.objects.all()
     serializer_class = LeaveUpdateSerializer
-    print(queryset)
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]
 
@@ -312,7 +322,7 @@ class DigitalTableDelete(APIView):
         try:
             digitaltable=DigitalTable.objects.get(id=digital_id)
             digitaltable.delete()
-            return Response({"message":"table deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+            return Response({"message":"table deleted successfully"},status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
             return Response({"error":" table not found"},status=status.HTTP_404_NOT_FOUND)
         
@@ -332,6 +342,13 @@ class JobApplyCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    def delete(self,request,job_id,format=None):
+        try:
+            job_apply=JobApply.objects.get(id=job_id)
+            job_apply.delete()
+            return Response({"message":"table deleted successfully"},status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({"error":" table not found"},status=status.HTTP_404_NOT_FOUND)
 
 class CallsheetCreate(APIView):
     permission_classes = [permissions.IsAuthenticated]

@@ -8,7 +8,8 @@ from django.contrib.auth import authenticate,login
 from .models import *
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import  permissions
-
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
 ############################################### team lead ############################################################## 
@@ -33,7 +34,7 @@ class TeamLeadListCreate(APIView):
     
 class StaffListCreate(APIView):
     def get(self, request, format=None):
-        staff = User.objects.filter(is_staff = True)
+        staff = User.objects.filter(is_staff = True,is_superuser=False)
         serializer = UserSerializer(staff, many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
         
@@ -82,8 +83,8 @@ class HRListCreate(APIView):
 
 class InternCreateView(APIView):
     def get(self, request, format=None):
-        hr = User.objects.filter(is_intern = True)
-        serializer = UserInternSerializer(hr, many=True)
+        intern = User.objects.filter(is_intern = True)
+        serializer = UserInternSerializer(intern, many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
         
     def post(self, request, *args, **kwargs):
@@ -199,18 +200,19 @@ class ReferencelistCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class ReferenceUpdate(APIView):
+class ReferenceDelete(APIView):
     def get(self,request,reference_id,format=None):
         reference=Reference.objects.get(id=reference_id)
         serializer=ReferenceSerializer(reference )
         return Response(serializer.data,status=status.HTTP_200_OK)
-    def patch(self,request,reference_id,format=None):
-        reference=Reference.objects.get(id=reference_id)
-        serializer=ReferenceSerializer(reference,data=request.data,partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    def delete(self,request,reference_id,format=None):
+        try:
+            reference=Reference.objects.get(id=reference_id)
+            reference.delete()
+            return Response({"message":"table deleted successfully"},status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({"error":" table not found"},status=status.HTTP_404_NOT_FOUND)
+        
     
 ############################################    Fee    ############################################################################
 
@@ -261,3 +263,15 @@ class Allusers(APIView):
         user= User.objects.filter(is_hr= False,is_superuser=False,is_intern=False )
         serializer = UserSerializer(user, many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+    def delete(self, request, pk, format=None):
+        user = get_object_or_404(User, pk=pk, is_hr=False, is_superuser=False, is_intern=False)
+        user.delete()
+        return Response(status=status.HTTP_200_OK)
+
+    def put(self, request, pk, format=None):
+        user = get_object_or_404(User, pk=pk, is_hr=False, is_superuser=False, is_intern=False)
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
