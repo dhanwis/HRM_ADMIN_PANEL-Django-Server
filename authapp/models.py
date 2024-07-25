@@ -60,8 +60,10 @@ class Reference(models.Model):
         return self.name   
     
     
+
 class Feedback(models.Model):
-    feedback = models.CharField(max_length=500,null=True,blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    feedback = models.CharField(max_length=500, null=True, blank=True)
     
 class Testimonial(models.Model):
     testimonial = models.CharField(max_length=500,null=True,blank=True)

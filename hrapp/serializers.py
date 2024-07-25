@@ -83,7 +83,6 @@ class CallsheetSerializer(serializers.ModelSerializer):
         fields='__all__'
 
 
-
 class QuatationSerializer(serializers.ModelSerializer):
     class Meta:
         model=quotation
