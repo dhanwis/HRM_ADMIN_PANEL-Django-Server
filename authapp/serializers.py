@@ -73,10 +73,14 @@ class ReferenceSerializer(serializers.ModelSerializer):
         fields='__all__'
 
 
+
+        
 class FeedbackSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+
     class Meta:
-        model=Feedback
-        fields='__all__'
+        model = Feedback
+        fields = ['id', 'feedback', 'username']
 
 
 class TestimonialSerializer(serializers.ModelSerializer):

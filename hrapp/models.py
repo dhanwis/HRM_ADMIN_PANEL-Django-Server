@@ -155,8 +155,8 @@ class callsheet(models.Model):
     customer_name = models.CharField(max_length=100,null=True,blank=True)
     project_name = models.CharField(max_length=100,null=True,blank=True)
     phone_number = models.CharField(max_length=100,null=True,blank=True)
-    start_date = models.DateField(max_length=100,null=True,blank=True)
-    end_date = models.DateField(max_length=100,null=True,blank=True)
+    date = models.DateField(max_length=100,null=True,blank=True)
+
     
     def _str_(self):
         return self.company_name
