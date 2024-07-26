@@ -4,7 +4,7 @@ import datetime
 # Create your models here.
 
 class TeamleadAssign(models.Model):  # hr to teamlead
-    user = models.ForeignKey(User,models.CASCADE, limit_choices_to={'is_teamlead':True},)
+    user = models.ForeignKey(User,models.CASCADE, limit_choices_to={'is_teamlead':True})
     tasktitle = models.CharField(max_length=100)
     startdate = models.DateField(max_length=100,null=True,blank=True)
     enddate = models.DateField(max_length=100,null=True,blank=True)
@@ -177,11 +177,7 @@ class quotation(models.Model):
     QUOTATION_CHOICES = [
         (WEB_APP_DEVELOPMENT, 'Web App Development'),
         (MOBILE_APP_DEVELOPMENT, 'Mobile App Development'),
-        (DIGITAL_MARKETING, 'Digital Marketing'),
-        
-    
-    
-    ]
+        (DIGITAL_MARKETING, 'Digital Marketing'),]
   
     quatation_type = models.CharField(max_length=50,choices=QUOTATION_CHOICES,default=WEB_APP_DEVELOPMENT)
     

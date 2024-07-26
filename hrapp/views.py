@@ -12,7 +12,7 @@ class TeamLeadAssignCreate(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
-        team_lead = TeamleadAssign.objects.all()
+        team_lead = TeamleadAssign.objects.filter(user=request.user)
         serializer = TeamLeadAssignSerializer(team_lead, many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
             
@@ -23,7 +23,13 @@ class TeamLeadAssignCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
+class TeamLeadAssignhr(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+    def get(self, request, format=None):
+        team_lead = TeamleadAssign.objects.all()
+        serializer = TeamLeadAssignSerializer(team_lead, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)    
     
 class TeamLeadAssignUpdate(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -129,7 +135,7 @@ class AssignProjectCreate(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
-        project_assign=AssignProject.objects.all()
+        project_assign=AssignProject.objects.filter(employeename=request.user)
         serializer=AssignProjectSerializer(project_assign,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
@@ -243,7 +249,7 @@ class NotesSharinglistCreate(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
-        notes=Noteupload.objects.all()
+        notes=Noteupload.objects.filter(student_name=request.user)
         serializer= NotesSharingSerializer(notes,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
@@ -258,7 +264,7 @@ class StatusSharinglistCreate(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
-        statusshare=StatusShare.objects.all()
+        statusshare=StatusShare.objects.filter(Teamleadname=request.user)
         serializer= StatusShareSerializer(statusshare,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
