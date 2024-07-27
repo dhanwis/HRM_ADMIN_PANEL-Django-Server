@@ -47,8 +47,7 @@ class UserInternSerializer(serializers.ModelSerializer):
             'country',
             'pincode',
             'password',
-            'profile',
-            'image'
+            'profile'
         ]
         extra_kwargs = {'password': {'write_only': True}}
 

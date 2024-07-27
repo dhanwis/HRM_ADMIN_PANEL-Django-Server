@@ -80,7 +80,6 @@ class StudentAssignlistCreate(APIView):
         return Response(serializer.data,status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
-        print(request.data)
         serializer = StudentAssignSerializer(data=request.data)
         if serializer.is_valid():   
             serializer.save()
@@ -264,7 +263,7 @@ class StatusSharinglistCreate(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]
     def get(self, request, format=None):
-        statusshare=StatusShare.objects.filter(Teamleadname=request.user)
+        statusshare=StatusShare.objects.all()
         serializer= StatusShareSerializer(statusshare,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
@@ -287,6 +286,7 @@ class DigitalTableCreate(APIView):
     
     def post(self, request, format=None):
         serializer = DigitalTableSerializer(data=request.data)
+        print(request.data)
         if serializer.is_valid():   
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
