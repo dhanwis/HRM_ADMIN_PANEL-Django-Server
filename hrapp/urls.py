@@ -8,6 +8,7 @@ router = DefaultRouter()
 router.register(r'machine-allocations', MachineAllocateViewSet)
 urlpatterns = [
     path('teamleadassign/',TeamLeadAssignCreate.as_view(),name='Teamleadassign'),
+    path('teamleadassignhr/',TeamLeadAssignhr.as_view(),name='Teamleadassign'),
     path('teamleadupdate/<int:teamlead_id>',TeamLeadAssignUpdate.as_view(),name='Teamleadupdate'),
     path('teamleadassign/<int:teamlead_id>',TeamLeadAssignDelete.as_view(),name='Teamleaddelete'),
     path('studentassign/',StudentAssignlistCreate.as_view(),name='StudentAssignlistCreate'),
