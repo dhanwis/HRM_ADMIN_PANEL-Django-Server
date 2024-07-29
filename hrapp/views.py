@@ -184,28 +184,6 @@ class AssignProjectStatusUpdate(APIView) :
 
 
 
-# class Process_Leave_Request(APIView):
-
-#      def process_leave_request(request, request_id):
-      
-#       try:
-
-#         leave_request = LeaveRequest.objects.get(pk=request_id)
-#       except LeaveRequest.DoesNotExist:
-#         return Response({'message': 'Leave request not found'}, status=status.HTTP_404_NOT_FOUND)
-
-#       action = request.data.get('action')
-
-#       if action not in ['accept', 'reject']:
-#         return Response({'message': 'Invalid action'}, status=status.HTTP_400_BAD_REQUEST)
-
-#       leave_request.status = 'accepted' if action == 'accept' else 'rejected'
-#       leave_request.save()
-
-#       serializer = LeaveRequestSerializer(leave_request)
-#       return Response({'message': f'Leave request {action}ed successfully', 'leave_request': serializer.data}, status=status.HTTP_200_OK)
-
-
 class LeaveLetterCreate(APIView):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes=[TokenAuthentication]

@@ -213,17 +213,7 @@ class ReferenceDelete(APIView):
         except ObjectDoesNotExist:
             return Response({"error":" table not found"},status=status.HTTP_404_NOT_FOUND)
         
-    
-############################################    Fee    ############################################################################
-
-# class FeelistCreate(APIView):
-#     def get(self, request, format=None):
-#         fee=Fee.objects.all()
-#         serializer= FeedbackSerializer(fee,many=True)
-#         return Response(serializer.data,status=status.HTTP_200_OK)
-    
-    
-##################################################Feedback#####################################################################
+    ##################################################################################################################
 
 class FeedbackListCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
