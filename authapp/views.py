@@ -265,3 +265,38 @@ class Allusers(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class LoginAll(APIView):
+    def post(self, request, format=None):
+        data = request.data
+        username = data.get('username')
+        password = data.get('password')
+
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+        if user:
+            # Create or retrieve token for authenticated user
+            serializer = UserSerializer(user)
+            token, created = Token.objects.get_or_create(user=user)
+            
+            # Determine the role and add role information to the response
+            if user.is_hr:
+                role = "HR"
+            elif user.is_teamlead:
+                role = "Teamlead"
+            elif user.is_staff:
+                role = "Staff"
+            elif user.is_frontoffice:
+                role = "Frontoffice"
+            else:
+                role = "Unknown"  # Fallback in case no role is identified
+
+            # Return user details, role, and token
+            return Response({
+                "user": serializer.data,
+                "role": role,
+                "token": token.key
+            }, status=status.HTTP_200_OK)
+
+        return Response({"details": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
