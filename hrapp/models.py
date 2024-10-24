@@ -190,7 +190,7 @@ class quotation(models.Model):
     
 class MachineAllocate(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={"is_intern": True})
-    course = models.ForeignKey(UserProfile, on_delete=models.CASCADE,to_field='course', related_name='allocated_courses')
+    course = models.CharField(max_length=100)
     timeslot = models.ForeignKey(StudentAssign, on_delete=models.CASCADE,to_field='id')
     machine = models.IntegerField( unique=True)
     vacate = models.BooleanField(default=False)

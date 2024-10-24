@@ -26,7 +26,7 @@ class User(AbstractUser):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     educationalQualification= models.CharField(max_length=100)
-    course = models.CharField(max_length=100,unique=True)
+    course = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
     category_choices = (
