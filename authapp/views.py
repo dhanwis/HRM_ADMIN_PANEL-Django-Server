@@ -305,7 +305,7 @@ class LoginAll(APIView):
 class EmployeeCountAPIView(APIView):
     def get(self, request, format=None):
         # Filter out users who are HR or interns
-        employee_count = User.objects.filter(is_hr=False, is_intern=False).count()
+        employee_count = User.objects.filter(is_hr=False, is_intern=False,is_superuser=False).count()
 
         # Return the total count of employees
         return Response({
