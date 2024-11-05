@@ -503,3 +503,19 @@ class MachineAllocateViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+class TeamLeadAssignCount(APIView):
+    def get(self, request, format=None):
+        try:
+            teamlead = TeamleadAssign.objects.all().count() 
+             # Get the total count of tasks
+
+            # Return the serialized data along with the total count
+            return Response(
+                {
+                    "total_count": teamlead
+
+                },
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
