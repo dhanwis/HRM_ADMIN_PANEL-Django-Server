@@ -504,16 +504,18 @@ class MachineAllocateViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class TeamLeadAssignCount(APIView):
+    
     def get(self, request, format=None):
         try:
-            teamlead = TeamleadAssign.objects.all().count() 
-             # Get the total count of tasks
+            team_lead = TeamleadAssign.objects.all()
+            serializer = TeamLeadAssignSerializer(team_lead, many=True)
+            total_count = team_lead.count()  # Get the total count of tasks
 
             # Return the serialized data along with the total count
             return Response(
                 {
-                    "total_count": teamlead
-
+                    "total_count": total_count,
+                    "data": serializer.data
                 },
                 status=status.HTTP_200_OK
             )
