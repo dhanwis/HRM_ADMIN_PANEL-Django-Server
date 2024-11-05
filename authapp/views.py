@@ -300,3 +300,21 @@ class LoginAll(APIView):
             }, status=status.HTTP_200_OK)
 
         return Response({"details": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class EmployeeCountAPIView(APIView):
+    def get(self, request, format=None):
+        # Filter out users who are HR or interns
+        employee_count = User.objects.filter(is_hr=False, is_intern=False).count()
+
+        # Return the total count of employees
+        return Response({
+            "employee_count": employee_count
+        }, status=status.HTTP_200_OK)
+        
+class InternCount(APIView):
+    def get(self,request,fromat=None):
+        intern_count=User.objects.filter(is_intern=True).count()
+        return Response({"interncount":intern_count},status=status.HTTP_200_OK)
+    
+    

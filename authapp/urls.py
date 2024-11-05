@@ -20,7 +20,12 @@ urlpatterns = [ path('Teamlead/', TeamLeadListCreate.as_view(), name="team-lead"
     path('intern/testimonal',TestimonialListCreateView.as_view(),name="interntestimonal"),
     path('users/',Allusers.as_view(),name="alluserexpecthrdeleteupdate"),
     path('allusers/<int:pk>/', Allusers.as_view(), name='allusers-detail'),
-    path("loginall/",LoginAll.as_view(),name="Alluserlogin"),
+    path('loginall/',LoginAll.as_view(),name="Alluserlogin"),
+    path('empcount/',EmployeeCountAPIView.as_view(),name="Employeecount"),
+    path('interncount/',InternCount.as_view(),name="interncount"),
+    
+    
+    
     
 
 ]
