@@ -248,7 +248,7 @@ class TestimonialListCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class Allusers(APIView):
+class    Allusers(APIView):
     def get(self, request, format=None):
         user= User.objects.filter(is_hr= False,is_superuser=False,is_intern=False )
         serializer = UserSerializer(user, many=True)
