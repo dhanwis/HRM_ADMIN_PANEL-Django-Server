@@ -23,6 +23,8 @@ urlpatterns = [ path('Teamlead/', TeamLeadListCreate.as_view(), name="team-lead"
     path('loginall/',LoginAll.as_view(),name="Alluserlogin"),
     path('empcount/',EmployeeCountAPIView.as_view(),name="Employeecount"),
     path('interncount/',InternCount.as_view(),name="interncount"),
+    path('paymet/',CreateOrderView.as_view(),name="paymentintegrate"),
+    path("payment/verify/",verify_payment,name="verifypayment")
     
     
     

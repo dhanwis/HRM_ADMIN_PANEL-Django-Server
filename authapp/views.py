@@ -10,6 +10,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import  permissions
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+import razorpay
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 # Create your views here.
 
 ############################################### team lead ############################################################## 
@@ -317,4 +320,43 @@ class InternCount(APIView):
         intern_count=User.objects.filter(is_intern=True).count()
         return Response({"interncount":intern_count},status=status.HTTP_200_OK)
     
+    
+
+razorpay_client = razorpay.Client(auth=("rzp_test_y6JLI3UpfjyFVW", "mlQr9hUdx6k9xmbPNQS0IWD3"))
+
+class CreateOrderView(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            amount = request.data.get('amount')  # Amount in paise (e.g., Rs. 500 => 50000)
+            currency = "INR"
+
+            # Create Razorpay order
+            payment_order = razorpay_client.order.create({
+                "amount": amount,
+                "currency": currency,
+                "payment_capture": 1  # Auto-capture after payment
+            })
+
+            return Response({
+                'order_id': payment_order['id'],
+                'amount': payment_order['amount'],
+                'currency': payment_order['currency']
+            }, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+@api_view(['POST'])
+def verify_payment(request):
+    try:
+        data = request.data
+        razorpay_client.utility.verify_payment_signature({
+            'razorpay_order_id': data['razorpay_order_id'],
+            'razorpay_payment_id': data['razorpay_payment_id'],
+            'razorpay_signature': data['razorpay_signature']
+        })
+        return Response({'message': 'Payment verified successfully.'}, status=status.HTTP_200_OK)
+    except razorpay.errors.SignatureVerificationError:
+        return Response({'error': 'Payment verification failed.'}, status=status.HTTP_400_BAD_REQUEST)
     
